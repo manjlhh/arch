@@ -29,14 +29,14 @@ source ./env.sh
 find configurations/ -type f -print | xargs dirname | sort | uniq | sed 's/^configurations/\/mnt/' | xargs mkdir -p
 
 for conf in $(find configurations/ -type f); do
-    envsubst $conf > "/mnt${conf#configurations}"
+    cat $conf | envsubst  > "/mnt${conf#configurations}"
 done
 
-envsubst finish | arch-chroot /mnt /bin/bash
+cat finish | envsubst | arch-chroot /mnt /bin/bash
 
 # ----------------------------------
-envsubst init.lst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
-envsubst init.lst | arch-chroot /mnt pacman --needed --noconfirm -S -
+cat init.lst | envsubst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat init.lst | envsubst | arch-chroot /mnt pacman --needed --noconfirm -S -
 
 cat base.lst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
 

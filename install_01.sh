@@ -51,4 +51,4 @@ done
 
 cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash
 
-cat repo | arch-chroot -u ${CFG_USERNAME} /mnt /bin/bash
+cat repo | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash

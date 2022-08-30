@@ -20,8 +20,6 @@ source ./env.sh
 
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 
-cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash
-
 # ----------------------------------
 cat init.lst | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
 cat init.lst | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -Sy -
@@ -35,3 +33,5 @@ find configurations/ -type f -print | xargs dirname | sort | uniq | sed 's/^conf
 for conf in $(find configurations/ -type f); do
     cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
 done
+
+cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash

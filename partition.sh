@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+umount -R /mnt
+
 sgdisk --zap-all $DEVICE || exit -1
 sgdisk -o $DEVICE
 sgdisk -n 1:0:+256M -t 1:ef00 -N 2 -t 2:8300 $DEVICE

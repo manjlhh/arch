@@ -21,12 +21,27 @@ source ./env.sh
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 
 # ----------------------------------
-cat init.lst | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
-cat init.lst | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -Sy -
+cat LST_INIT | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' > /tmp/INIT
+while : ; do
+    aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/INIT -c --save-session /tmp/INIT_S
+    has_error=`wc -l < /tmp/INIT_S`
+    [ $has_error -eq 0 ] && break;
+done
+cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -Sy -
 
-cat base.lst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat LST_BASE | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' > /tmp/BASE
+while : ; do
+    aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/BASE -c --save-session /tmp/BASE_S
+    has_error=`wc -l < /tmp/BASE_S`
+    [ $has_error -eq 0 ] && break;
+done
 
-cat $CFG_DESKTOP_ENVIRONMENT | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat "LST_$CFG_DESKTOP_ENVIRONMENT" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' > /tmp/DE
+while : ; do
+    aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/DE -c --save-session /tmp/DE_S
+    has_error=`wc -l < /tmp/DE_S`
+    [ $has_error -eq 0 ] && break;
+done
 # ----------------------------------
 
 find configurations/ -type f -print | xargs dirname | sort | uniq | sed 's/^configurations/\/mnt/' | xargs mkdir -p

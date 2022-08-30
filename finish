@@ -1,6 +1,5 @@
-timedatectl set-ntp true
 locale-gen
 ln -s /usr/share/zoneinfo/Europe/Samara /etc/localtime
 hwclock --systohc --utc
-printf 'root:$ROOT_PASSWORD' | chpasswd -e
-useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$USER_PASSWORD' -s /bin/fish $USERNAME
+printf 'root:$CFG_ROOT_PASSWORD' | chpasswd -e
+useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$CFG_USER_PASSWORD' -s /bin/fish $CFG_USERNAME

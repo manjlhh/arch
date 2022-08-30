@@ -1,19 +1,11 @@
 #!/usr/bin/env sh
-set -x
 
 systemctl stop reflector.service
 timedatectl set-ntp true
 
 pacman --noconfirm --needed -Sy aria2
 
-source ./plain_configuration
-
-[ -z "$DEVICE" ] && echo "DEVICE" && exit -1
-[ -z "$USERNAME" ] && echo "USERNAME" && exit -1
-[ -z "$HOSTNAME" ] && echo "HOSTNAME" && exit -1
-[ -z "$ROOT_PASSWORD" ] && echo "ROOT_PASSWORD" && exit -1
-[ -z "$USER_PASSWORD" ] && echo "USER_PASSWORD" && exit -1
-[ -z "$DESKTOP_ENVIRONMENT" ] && echo "DESKTOP_ENVIRONMENT" && exit -1
+source ./cfg_envs.sh
 
 . ./partition.sh
 
@@ -28,16 +20,18 @@ source ./env.sh
 
 find configurations/ -type f -print | xargs dirname | sort | uniq | sed 's/^configurations/\/mnt/' | xargs mkdir -p
 
+ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
+
 for conf in $(find configurations/ -type f); do
-    cat $conf | envsubst  > "/mnt${conf#configurations}"
+    cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
 done
 
-cat finish | envsubst | arch-chroot /mnt /bin/bash
+cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash
 
 # ----------------------------------
-cat init.lst | envsubst | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
-cat init.lst | envsubst | arch-chroot /mnt pacman --needed --noconfirm -Sy -
+cat init.lst | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat init.lst | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -Sy -
 
 cat base.lst | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
 
-cat $DE_PKGS_LIST | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat $CFG_DESKTOP_ENVIRONMENT | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -

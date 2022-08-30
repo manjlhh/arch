@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -x
 
 systemctl stop reflector.service
 timedatectl set-ntp true

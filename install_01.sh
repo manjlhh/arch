@@ -35,3 +35,5 @@ for conf in $(find configurations/ -type f); do
 done
 
 cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash
+
+cat repo | arch-chroot -u ${CFG_USERNAME} /mnt /bin/bash

@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+source ./cfg_envs.sh
+
 set -a
 
 CFG_ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $CFG_DEVICE | tail -1)

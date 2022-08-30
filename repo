@@ -1,0 +1,2 @@
+mkdir -p $HOME/repo
+git clone https://github.com/devrtc0/arch.git $HOME/repo/arch

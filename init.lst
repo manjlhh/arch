@@ -1,4 +1,5 @@
 $CFG_UCODE
+git
 base
 curl
 fish

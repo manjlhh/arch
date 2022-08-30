@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+! systemctl is-enabled NetworkManager.service > /dev/null && sudo systemctl enable --now NetworkManager.service
+systemctl is-enabled NetworkManager-wait-online.service > /dev/null && sudo systemctl disable --now NetworkManager-wait-online.service
+
+[ -z "$CFG_NETWORKMANAGER_SSID" ] && exit 0
+
+while : ; do
+    nmcli device wifi connect $CFG_NETWORKMANAGER_SSID password $CFG_NETWORKMANAGER_PASSWORD
+    [ $? -eq 0 ] && break
+    sleep 1
+done

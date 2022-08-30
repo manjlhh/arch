@@ -19,7 +19,11 @@ case "$CFG_CPU_VENDOR" in
 esac
 
 case "$CFG_DESKTOP_ENVIRONMENT" in
-"PLASMA" | "GNOME")
+"PLASMA")
+    CFG_DESKTOP_MANAGER='sddm'
+    ;;
+"GNOME")
+    CFG_DESKTOP_MANAGER='gdm'
     ;;
 *)
     echo "NO DE: $CFG_DESKTOP_ENVIRONMENT"

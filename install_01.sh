@@ -21,13 +21,14 @@ source ./env.sh
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 
 # ----------------------------------
+arch-chroot /mnt pacman --needed --noconfirm -Sy
 cat LST_INIT | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' > /tmp/INIT
 while : ; do
     aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/INIT -c --save-session /tmp/INIT_S
     has_error=`wc -l < /tmp/INIT_S`
     [ $has_error -eq 0 ] && break;
 done
-cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -Sy -
+cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -S -
 
 cat LST_BASE | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' > /tmp/BASE
 while : ; do

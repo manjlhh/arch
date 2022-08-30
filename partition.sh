@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-umount -R /mnt
+umount -qR /mnt
 
 sgdisk --zap-all $DEVICE || exit -1
 sgdisk -o $DEVICE
@@ -11,7 +11,7 @@ sync
 BOOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $DEVICE | head -2 | tail -1)
 ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $DEVICE | tail -1)
 
-yes | mkfs.fat -F32 "$BOOT_DEVICE"
+yes | mkfs.fat -n boot -F32 "$BOOT_DEVICE"
 yes | mkfs.ext4 -L system "$ROOT_DEVICE"
 
 sync

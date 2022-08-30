@@ -35,9 +35,9 @@ done
 cat finish | envsubst | arch-chroot /mnt /bin/bash
 
 # ----------------------------------
-cat init.lst | envsubst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
-cat init.lst | envsubst | arch-chroot /mnt pacman --needed --noconfirm -S -
+cat init.lst | envsubst | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat init.lst | envsubst | arch-chroot /mnt pacman --needed --noconfirm -Sy -
 
-cat base.lst | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat base.lst | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
 
-cat $DE_PKGS_LIST | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -
+cat $DE_PKGS_LIST | pacman --needed --sysroot /mnt -Syp - | sed '/^file/d' | aria2c -x 4 -d /mnt/var/cache/pacman/pkg -i -

@@ -43,11 +43,11 @@ if [ ! -f $MAN_KDBX ]; then
         [ $? -eq 0 ] && break
         rm -rf $MAN_KDBX
     done
+fi
 
+if [ ! -f "$SANCTUM_SANCTORUM" ]; then
     # content extraction
-    while : ; do
-        [ -z "$z" ] && echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
-    done
+    [ -z "$z" ] && echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
     printf 'jA0ECQMCI1cek2kkr8b30kQBNbZ/buHKjKho+elNjkeWVTOwvLkJAdh4+idX8+hxLL89sHDO9QwEFIfn5wHgpnorBy4npqlYz0zfS0TYDKI14OunHQ==' | base64 --d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
 fi
 

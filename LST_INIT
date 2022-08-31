@@ -1,11 +1,7 @@
 $CFG_UCODE
-git
 base
-curl
 fish
 linux-firmware
 linux-lts
-networkmanager
-polkit
-sudo
 mkinitcpio
+sudo

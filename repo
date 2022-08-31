@@ -1,5 +1,0 @@
-cd /home/${CFG_USERNAME}
-sudo -u ${CFG_USERNAME} bash
-mkdir -p $HOME/repo
-git clone https://github.com/devrtc0/arch.git $HOME/repo/arch
-exit

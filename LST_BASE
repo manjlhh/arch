@@ -6,6 +6,7 @@ chezmoi
 chromium
 code
 curl
+curl
 dnsmasq
 exa
 exfat-utils
@@ -31,6 +32,7 @@ micro
 mkvtoolnix-gui
 ncdu
 neovim
+networkmanager
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -41,6 +43,7 @@ p7zip
 pass
 pbzip2
 pigz
+polkit
 pulseaudio-bluetooth
 telegram-desktop
 ttf-hack

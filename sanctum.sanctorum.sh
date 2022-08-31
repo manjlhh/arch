@@ -8,7 +8,7 @@ mkdir -p $(dirname $MAN_KDBX)
 ! type gpg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
 ! type jq >/dev/null 2>&1 && APPS="$APPS jq"
-[ ! -z "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
+[ -n "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
 
 # printf 'text' | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
 # cat $SANCTUM_SANCTORUM | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
@@ -48,7 +48,7 @@ fi
 if [ ! -f "$SANCTUM_SANCTORUM" ]; then
     # content extraction
     [ -z "$z" ] && echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
-    printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 --d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
+    printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 -d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
 fi
 
 while : ; do

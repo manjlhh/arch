@@ -1,6 +1,7 @@
 $CFG_UCODE
 base
 fish
+git
 linux-firmware
 linux-lts
 mkinitcpio

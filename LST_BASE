@@ -46,6 +46,7 @@ ttf-hack
 unrar
 unzip
 wget
+xdg-user-dirs
 xz
 yt-dlp
 zbar

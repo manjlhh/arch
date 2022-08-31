@@ -5,7 +5,7 @@
 
 mkdir -p $(dirname $MAN_KDBX)
 
-! type gnupg >/dev/null 2>&1 && APPS="$APPS gnupg"
+! type gpg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
 ! type jq >/dev/null 2>&1 && APPS="$APPS jq"
 [ ! -z "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
@@ -13,7 +13,7 @@ mkdir -p $(dirname $MAN_KDBX)
 # printf 'text' | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
 # cat $SANCTUM_SANCTORUM | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
 
-if [ ! -f $MAN_KDBX ]; then
+if [ ! -f "$MAN_KDBX" ]; then
     ### main repo
     while : ; do
         test -z $passphrase && echo 'enter kdbx password:' && read -ers passphrase
@@ -76,12 +76,16 @@ done
 # fi
 
 # REPOSOTORIES
+get_token () {
+    [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
+    if [ -n "$token" ]; then
+        return
+    fi
+    token=$(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token)
+}
 ## kdbx
 if [ ! -d $HOME/repo/kdbx ]; then
-    [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=$(get_token)
-
-    git clone https://devrtc0:${token}@github.com/devrtc0/kdbx.git $HOME/repo/kdbx
+    git clone https://github.com/devrtc0/kdbx.git $HOME/repo/kdbx
     sh -c 'cd $HOME/repo/kdbx; git remote set-url origin git@github.com:devrtc0/kdbx.git'
     sh -c 'cd $HOME/repo/kdbx; git remote add gitlab git@gitlab.com:devrtc0/kdbx.git'
     sh -c 'cd $HOME/repo/kdbx; git remote add flic git@gitflic.ru:devrtc0/kdbx.git'
@@ -89,16 +93,10 @@ if [ ! -d $HOME/repo/kdbx ]; then
 fi
 # settings
 if [ ! -d $HOME/repo/settings ]; then
-    [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=$(get_token)
+    get_token
 
     git clone https://devrtc0:${token}@github.com/devrtc0/settings.git $HOME/repo/settings
     sh -c 'cd $HOME/repo/settings; git remote set-url origin git@github.com:devrtc0/settings.git'
 fi
 # this repo - arch
 sh -c "cd $HOME/repo/arch; git remote set-url origin git@github.com:devrtc0/arch.git"
-
-get_token() {
-    [ ! -z "$token" ] && return "$token"
-    return $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token)
-}

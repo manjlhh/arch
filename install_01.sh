@@ -10,7 +10,7 @@ source ./cfg_envs.sh
 . ./partition.sh
 
 cp -f ./configurations/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
-sed -i '/ParallelDownloads/c\ParallelDownloads = 4' /etc/pacman.conf
+cp -f ./configurations/etc/pacman.conf /etc/pacman.conf
 
 yes | pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -24,11 +24,7 @@ ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 arch-chroot /mnt pacman --needed --noconfirm -Sy
 
 cat LST_INIT LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | sed '/$/{p;s/$/.sig/g;}' > /tmp/DL_LST
-while : ; do
-    aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/DL_LST -c --save-session /tmp/DL_SES
-    has_error=`wc -l < /tmp/DL_SES`
-    [ $has_error -eq 0 ] && break;
-done
+aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/DL_LST -c --save-session /tmp/DL_SES
 cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -S -
 
 # ----------------------------------

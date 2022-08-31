@@ -8,7 +8,7 @@ mkdir -p $(dirname $MAN_KDBX)
 ! type gnupg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
 ! type jq >/dev/null 2>&1 && APPS="$APPS jq"
-[ -n "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
+[ ! -z "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
 
 # printf 'text' | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
 # cat $SANCTUM_SANCTORUM | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
@@ -79,7 +79,7 @@ done
 ## kdbx
 if [ ! -d $HOME/repo/kdbx ]; then
     [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=$([ -n "$token" ] && printf "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
+    token=$(get_token)
 
     git clone https://devrtc0:${token}@github.com/devrtc0/kdbx.git $HOME/repo/kdbx
     sh -c 'cd $HOME/repo/kdbx; git remote set-url origin git@github.com:devrtc0/kdbx.git'
@@ -90,10 +90,15 @@ fi
 # settings
 if [ ! -d $HOME/repo/settings ]; then
     [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=$([ -n "$token" ] && printf "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
+    token=$(get_token)
 
     git clone https://devrtc0:${token}@github.com/devrtc0/settings.git $HOME/repo/settings
     sh -c 'cd $HOME/repo/settings; git remote set-url origin git@github.com:devrtc0/settings.git'
 fi
 # this repo - arch
 sh -c "cd $HOME/repo/arch; git remote set-url origin git@github.com:devrtc0/arch.git"
+
+get_token() {
+    [ ! -z "$token" ] && return "$token"
+    return $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token)
+}

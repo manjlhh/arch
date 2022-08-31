@@ -79,7 +79,7 @@ done
 ## kdbx
 if [ ! -d $HOME/repo/kdbx ]; then
     [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=([ -n "$token" ] && "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
+    token=$([ -n "$token" ] && "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
 
     git clone https://devrtc0:${token}@github.com/devrtc0/kdbx.git $HOME/repo/kdbx
     sh -c 'cd $HOME/repo/kdbx; git remote set-url origin git@github.com:devrtc0/kdbx.git'
@@ -90,7 +90,7 @@ fi
 # settings
 if [ ! -d $HOME/repo/settings ]; then
     [ -z $passphrase ] && echo 'enter kdbx password:' && read -ers passphrase
-    token=([ -n "$token" ] && "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
+    token=$([ -n "$token" ] && "$token" || $(yes $passphrase | keepassxc-cli show -q -a Password -s -k $SANCTUM_SANCTORUM $MAN_KDBX Repositories/GitHub/token))
 
     git clone https://devrtc0:${token}@github.com/devrtc0/settings.git $HOME/repo/settings
     sh -c 'cd $HOME/repo/settings; git remote set-url origin git@github.com:devrtc0/settings.git'

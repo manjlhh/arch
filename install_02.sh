@@ -32,3 +32,4 @@ if [ ! -d "$(chezmoi source-path)" ]; then
     sh -c "cd $(chezmoi source-path); git switch $branch;" && chezmoi apply
 fi
 
+. ./"${CFG_DESKTOP_ENVIRONMENT}.sh"

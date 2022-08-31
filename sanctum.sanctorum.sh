@@ -48,7 +48,7 @@ fi
 if [ ! -f "$SANCTUM_SANCTORUM" ]; then
     # content extraction
     [ -z "$z" ] && echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
-    printf 'jA0ECQMCI1cek2kkr8b30kQBNbZ/buHKjKho+elNjkeWVTOwvLkJAdh4+idX8+hxLL89sHDO9QwEFIfn5wHgpnorBy4npqlYz0zfS0TYDKI14OunHQ==' | base64 --d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
+    printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 --d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
 fi
 
 while : ; do

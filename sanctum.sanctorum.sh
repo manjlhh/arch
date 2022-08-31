@@ -3,7 +3,7 @@
 [ -z $MAN_KDBX ] && echo 'MAN_KDBX not set' && exit -1
 [ -z $SANCTUM_SANCTORUM ] && echo 'SANCTUM_SANCTORUM not set' && exit -1
 
-mkdir -p (dirname $MAN_KDBX)
+mkdir -p $(dirname $MAN_KDBX)
 
 ! type gnupg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"

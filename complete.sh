@@ -2,8 +2,6 @@
 
 source ./env.sh
 
-. ./yay.sh
-
 cat ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | yay --sudoloop --needed --noconfirm -S -
 sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
 
@@ -11,6 +9,8 @@ timedatectl set-ntp true
 
 . ./network_manager.sh
 sudo systemctl enable --now fstrim.timer bluetooth.service dnsmasq.service
+
+. ./yay.sh
 
 [ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD

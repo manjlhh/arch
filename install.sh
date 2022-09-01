@@ -23,7 +23,9 @@ ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 # ----------------------------------
 arch-chroot /mnt pacman --needed --noconfirm -Sy
 
-cat LST_INIT LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | sed '/$/{p;s/$/.sig/g;}' > /tmp/DL_LST
+comm -12 <(pacman -Slq | sort -u) <(printf '%s\n' $CFG_PACKAGES | sort -u) > /tmp/LST_PKGS
+
+cat /tmp/LST_PKGS LST_INIT LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | sed '/$/{p;s/$/.sig/g;}' > /tmp/DL_LST
 aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/DL_LST -c --save-session /tmp/DL_SES
 cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -S -
 

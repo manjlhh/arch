@@ -2,7 +2,9 @@
 
 source ./env.sh
 
-cat LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
+. ./yay.sh
+
+cat LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | yay --sudoloop --needed --noconfirm -S -
 sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
 
 timedatectl set-ntp true
@@ -10,11 +12,9 @@ timedatectl set-ntp true
 . ./network_manager.sh
 sudo systemctl enable --now fstrim.timer bluetooth.service dnsmasq.service
 
-[ -n "$CFG_PACKAGES" ] && sudo pacman --needed --noconfirm -S $CFG_PACKAGES
+[ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
 [ -n "$CFG_GROUPS" ] && sudo usermod -a -G $CFG_GROUPS $CFG_USERNAME
-
-. ./yay.sh
 
 MAN_KDBX="$HOME/repo/man.kdbx"
 SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum"

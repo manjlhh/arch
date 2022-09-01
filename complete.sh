@@ -2,7 +2,7 @@
 
 source ./env.sh
 
-cat ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | yay --sudoloop --needed --noconfirm -S -
+cat ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
 sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
 
 timedatectl set-ntp true

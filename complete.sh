@@ -4,7 +4,7 @@ source ./env.sh
 
 . ./yay.sh
 
-cat LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | yay --sudoloop --needed --noconfirm -S -
+cat ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | yay --sudoloop --needed --noconfirm -S -
 sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
 
 timedatectl set-ntp true
@@ -32,4 +32,4 @@ if [ ! -d "$(chezmoi source-path)" ]; then
     sh -c "cd $(chezmoi source-path); git switch $branch;" && chezmoi apply
 fi
 
-. ./"${CFG_DESKTOP_ENVIRONMENT}.sh"
+. ./settings/"${CFG_DESKTOP_ENVIRONMENT}.sh"

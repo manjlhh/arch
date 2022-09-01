@@ -25,9 +25,9 @@ arch-chroot /mnt pacman --needed --noconfirm -Sy
 
 comm -12 <(pacman -Slq | sort -u) <(printf '%s\n' $CFG_PACKAGES | sort -u) > /tmp/LST_PKGS
 
-cat /tmp/LST_PKGS LST_INIT LST_BASE "LST_$CFG_DESKTOP_ENVIRONMENT" | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | sed '/$/{p;s/$/.sig/g;}' > /tmp/DL_LST
+cat /tmp/LST_PKGS ./lists/LST_INIT ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | envsubst "$ENV_SUBST" | pacman --needed --sysroot /mnt -Sp - | sed '/^file/d' | sed '/$/{p;s/$/.sig/g;}' > /tmp/DL_LST
 aria2c -d /mnt/var/cache/pacman/pkg -i /tmp/DL_LST -c --save-session /tmp/DL_SES
-cat LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -S -
+cat ./lists/LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed --noconfirm -S -
 
 # ----------------------------------
 

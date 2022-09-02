@@ -14,7 +14,7 @@ sudo systemctl enable --now fstrim.timer bluetooth.service dnsmasq.service
 
 [ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
-[ -n "$CFG_GROUPS" ] && sudo usermod -a -G $CFG_GROUPS $CFG_USERNAME
+[ -n "$CFG_GROUPS" ] && sudo usermod -a -G ${CFG_GROUPS// /,} $CFG_USERNAME
 
 MAN_KDBX="$HOME/repo/man.kdbx"
 SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum"

@@ -38,8 +38,8 @@ if [ ! -f "$MAN_KDBX" ]; then
 
     ### decrypt kdbx
     while : ; do
-        echo 'enter password for kdb archive:' && read -ers z
-        gpg --passphrase "$z" --batch --quiet --decrypt /tmp/kdbx | xz -d > $MAN_KDBX
+        test -z $passphrase && echo 'enter password for kdb archive:' && read -ers passphrase
+        gpg --passphrase "$passphrase" --batch --quiet --decrypt /tmp/kdbx | xz -d > $MAN_KDBX
         [ $? -eq 0 ] && break
         rm -rf $MAN_KDBX
     done

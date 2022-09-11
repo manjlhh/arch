@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-source ./cfg_envs
+source ./env_cfg
 
 set -a
 

@@ -5,7 +5,7 @@ timedatectl set-ntp true
 
 pacman --noconfirm --needed -Sy aria2
 
-source ./cfg_envs
+source ./env_cfg
 
 . ./partition
 

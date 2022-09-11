@@ -2,7 +2,7 @@
 
 if [ $# -ne 2 ]; then
     echo 'wrong arguments number'
-    echo 'usage: ./decode_configuration.sh <password> <profile name from profiles directory>'
+    echo 'usage: ./decode_configuration <password> <profile name from profiles directory>'
     exit -1
 fi
 

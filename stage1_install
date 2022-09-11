@@ -5,9 +5,9 @@ timedatectl set-ntp true
 
 pacman --noconfirm --needed -Sy aria2
 
-source ./cfg_envs.sh
+source ./cfg_envs
 
-. ./partition.sh
+. ./partition
 
 cp -f ./configurations/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
 cp -f ./configurations/etc/pacman.conf /etc/pacman.conf
@@ -16,7 +16,7 @@ yes | pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/relatime/noatime/' /mnt/etc/fstab
 
-source ./env.sh
+source ./env
 
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 
@@ -36,6 +36,16 @@ for conf in $(find configurations/ -type f); do
     cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
 done
 
-cat finish | envsubst "$ENV_SUBST" | arch-chroot /mnt /bin/bash
+arch-chroot /mnt /bin/bash <<EOF
+
+locale-gen
+ln -s /usr/share/zoneinfo/Europe/Samara /etc/localtime
+hwclock --systohc --utc
+printf 'root:$CFG_ROOT_PASSWORD' | chpasswd -e
+useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$CFG_USER_PASSWORD' -s /bin/fish $CFG_USERNAME
+bootctl install
+mkinitcpio -P
+
+EOF
 
 echo "mkdir -p /home/${CFG_USERNAME}/repo && git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch" | arch-chroot /mnt sudo -u ${CFG_USERNAME} sh

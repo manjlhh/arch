@@ -47,8 +47,13 @@ fi
 
 if [ ! -f "$SANCTUM_SANCTORUM" ]; then
     # content extraction
-    [ -z "$z" ] && echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
-    printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 -d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM
+    while : ; do
+        echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
+        [ -z "$z" ] && break
+        hash=$(printf "$z" | sha512sum | awk '{ print $1 }' || echo 0)
+        hash=${hash:0:64}
+        [ $hash = '2b54c788564c6d81101e834ce39f0e9a2b6281f3f504894c89228550ecebec68' ] && printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 -d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM && break
+    done
 fi
 
 while : ; do

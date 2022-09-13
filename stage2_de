@@ -5,15 +5,14 @@ source ./env
 sudo timedatectl set-ntp true
 
 sudo systemctl enable --now dnsmasq.service
+sleep 2
 . ./network_manager
+sleep 2
 
 cat ./lists/LST_BASE ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
-sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
-
-sudo systemctl enable --now fstrim.timer bluetooth.service
+sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service fstrim.timer bluetooth.service
 
 . ./yay
-
 
 [ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
@@ -22,4 +21,3 @@ sudo systemctl enable --now fstrim.timer bluetooth.service
 MAN_KDBX="$HOME/repo/man.kdbx"
 SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum"
 . ./sanctum.sanctorum
-

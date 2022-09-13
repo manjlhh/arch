@@ -1,4 +1,3 @@
-aria2
 asp
 base-devel
 bluez-utils
@@ -29,15 +28,12 @@ micro
 mkvtoolnix-gui
 ncdu
 neovim
-networkmanager
 oath-toolkit
 openssh
 p7zip
-pacoloco
 pass
 pbzip2
 pigz
-polkit
 pulseaudio-bluetooth
 telegram-desktop
 ttf-hack

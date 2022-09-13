@@ -1,8 +1,11 @@
 $CFG_UCODE
 base
+dnsmasq
 fish
 git
 linux-firmware
 linux-lts
 mkinitcpio
+networkmanager
+polkit
 sudo

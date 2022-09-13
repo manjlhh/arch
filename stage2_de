@@ -8,7 +8,7 @@ sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
 sudo timedatectl set-ntp true
 
 . ./network_manager
-sudo systemctl enable --now fstrim.timer bluetooth.service dnsmasq.service
+sudo systemctl enable --now fstrim.timer bluetooth.service dnsmasq.service pacoloco.service
 
 . ./yay
 

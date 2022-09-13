@@ -9,7 +9,9 @@ source ./env_cfg
 
 . ./partition
 
-cp -f ./configurations/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
+printf 'Server = https://mirror.yandex.ru/archlinux/$repo/os/$arch
+Server = https://mirror.truenetwork.ru/archlinux/$repo/os/$arch
+' > /etc/pacman.d/mirrorlist
 cp -f ./configurations/etc/pacman.conf /etc/pacman.conf
 
 yes | pacstrap /mnt base

@@ -1,5 +1,17 @@
 #!/usr/bin/env sh
 
+# konsole
+kwriteconfig5 --file $HOME/.local/share/konsole/Profile1.profile --group Appearance --key ColorScheme "Breeze"
+kwriteconfig5 --file $HOME/.local/share/konsole/Profile1.profile --group Appearance --key Font "Hack,11,-1,7,50,0,0,0,0,0"
+kwriteconfig5 --file $HOME/.local/share/konsole/Profile1.profile --group General --key Name "Profile1"
+kwriteconfig5 --file $HOME/.local/share/konsole/Profile1.profile --group General --key Parent "FALLBACK/"
+kwriteconfig5 --file $HOME/.local/share/konsole/Profile1.profile --group Scrolling --key HistorySize "5000"
+
+kwriteconfig5 --file $HOME/.config/konsolerc --group 'Desktop Entry' --key DefaultProfile "Profile1.profile"
+kwriteconfig5 --file $HOME/.config/konsolerc --group General --key ConfigVersion "1"
+kwriteconfig5 --file $HOME/.config/konsolerc --group MainWindow --key MenuBar "Disabled"
+kwriteconfig5 --file $HOME/.config/konsolerc --group MainWindow --key ToolBarsMovable "Disabled"
+
 # screen lock
 kwriteconfig5 --file $HOME/.config/kscreenlockerrc --group Daemon --key Autolock "false"
 

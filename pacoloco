@@ -4,6 +4,6 @@ type pacoloco >/dev/null 2>&1 && return
 
 yay -Sy pacoloco --noconfirm --needed
 
-printf 'Server = http://localhost:9129/repo/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+echo 'Server = http://localhost:9129/repo/archlinux/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
 
 sudo systemctl enable --now pacoloco.service

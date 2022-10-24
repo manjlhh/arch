@@ -8,7 +8,6 @@ curl
 dnsmasq
 exa
 exfat-utils
-expect
 fd
 firefox
 git
@@ -31,7 +30,6 @@ neovim
 oath-toolkit
 openssh
 p7zip
-pass
 pbzip2
 pigz
 pulseaudio-bluetooth

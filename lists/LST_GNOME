@@ -12,6 +12,8 @@ gnome-shell
 gnome-terminal
 gnome-tweaks
 nautilus
+qgnomeplatform-qt5
+qgnomeplatform-qt6
 totem
 transmission-gtk
 xdg-user-dirs

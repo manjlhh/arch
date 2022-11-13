@@ -1,7 +1,6 @@
 eog
 evince
 file-roller
-flameshot
 gdm
 gedit
 gnome-backgrounds
@@ -16,4 +15,4 @@ qgnomeplatform-qt5
 qgnomeplatform-qt6
 totem
 transmission-gtk
-xdg-user-dirs
+wl-clipboard

@@ -2,7 +2,6 @@ ark
 bluedevil
 breeze-gtk
 dolphin
-flameshot
 gwenview
 kcalc
 kde-gtk-config
@@ -20,5 +19,4 @@ qbittorrent
 sddm
 sddm-kcm
 xclip
-xdg-user-dirs
 xorg-xinput

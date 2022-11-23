@@ -20,7 +20,9 @@ genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/relatime/noatime/' /mnt/etc/fstab
 
 CFG_ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $CFG_DEVICE | tail -1)
+set -a
 CFG_ROOT_DEVICE_UUID=$(blkid -s UUID -o value "$CFG_ROOT_DEVICE")
+set +a
 
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 
@@ -36,6 +38,8 @@ for conf in $(find configurations/ -type f); do
     cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
 done
 
+PASSWD=$1
+PROFILE=$2
 arch-chroot /mnt /bin/bash <<EOF
 
 locale-gen
@@ -46,6 +50,9 @@ useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$CFG_
 bootctl install
 mkinitcpio -P
 
-EOF
+mkdir -p /home/${CFG_USERNAME}/repo
+git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch
+cd /home/${CFG_USERNAME}/repo/arch
+./decode_configuration $PASSWD $PROFILE
 
-echo "mkdir -p /home/${CFG_USERNAME}/repo && git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch" | arch-chroot /mnt sudo -u ${CFG_USERNAME} sh
+EOF

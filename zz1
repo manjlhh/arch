@@ -52,7 +52,7 @@ EOF
 
 PASSWD=$1
 PROFILE=$2
-arch-chroot /mnt -u ${CFG_USERNAME} /bin/bash <<EOF
+arch-chroot /mnt sudo -u ${CFG_USERNAME} sh <<EOF
 
 mkdir -p /home/${CFG_USERNAME}/repo
 git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch

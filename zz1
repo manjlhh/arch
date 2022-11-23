@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-systemctl stop reflector.service
+type reflector >/dev/null 2>&1 && systemctl stop reflector.service
 timedatectl set-ntp true
 
 pacman --noconfirm --needed -Sy

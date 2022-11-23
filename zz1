@@ -19,7 +19,8 @@ yes | pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/relatime/noatime/' /mnt/etc/fstab
 
-source ./env
+CFG_ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $CFG_DEVICE | tail -1)
+CFG_ROOT_DEVICE_UUID=$(blkid -s UUID -o value "$CFG_ROOT_DEVICE")
 
 ENV_SUBST=$(printf '${%s} ' $(env | cut -d'=' -f1 | grep '^CFG_'))
 

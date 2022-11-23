@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+source ./env
+
+! type dotter >/dev/null 2>&1 && yay --sudoloop --needed --noconfirm -Sy dotter-rs-bin
+
+. ./settings/"$CFG_DESKTOP_ENVIRONMENT"

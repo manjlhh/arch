@@ -38,8 +38,6 @@ for conf in $(find configurations/ -type f); do
     cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
 done
 
-PASSWD=$1
-PROFILE=$2
 arch-chroot /mnt /bin/bash <<EOF
 
 locale-gen
@@ -49,6 +47,12 @@ printf 'root:$CFG_ROOT_PASSWORD' | chpasswd -e
 useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$CFG_USER_PASSWORD' -s /bin/fish $CFG_USERNAME
 bootctl install
 mkinitcpio -P
+
+EOF
+
+PASSWD=$1
+PROFILE=$2
+arch-chroot /mnt -u ${CFG_USERNAME} /bin/bash <<EOF
 
 mkdir -p /home/${CFG_USERNAME}/repo
 git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch

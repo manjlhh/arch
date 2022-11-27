@@ -2,6 +2,11 @@
 
 source ./env_cfg
 
-! type dotter >/dev/null 2>&1 && yay --sudoloop --needed --noconfirm -Sy dotter-rs-bin
+./apps/yay
+./apps/go
+./apps/rust
+./apps/pacoloco
+./apps/dotter
+[ "PLASMA" = "$CFG_DESKTOP_ENVIRONMENT" ] && ./apps/systemd-ssh-agent
 
 . ./settings/"$CFG_DESKTOP_ENVIRONMENT"

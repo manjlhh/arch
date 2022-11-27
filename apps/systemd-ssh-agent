@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+pacman -Qeq systemd-ssh-agent >/dev/null 2>&1 || yay --sudoloop --needed --noconfirm -Sy systemd-ssh-agent
+
+systemctl --user enable ssh-agent.service

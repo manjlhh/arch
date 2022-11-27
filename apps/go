@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+pacman -Qeq go >/dev/null 2>&1 || sudo pacman --needed --noconfirm -Sy go
+pacman -Qeq gopls >/dev/null 2>&1 || sudo pacman --needed --noconfirm -Sy gopls

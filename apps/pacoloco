@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-type pacoloco >/dev/null 2>&1 && return
+pacman -Qeq pacoloco >/dev/null 2>&1 && exit
 
-yay --sudoloop --noconfirm --needed -Sy pacoloco
+sudo pacman --noconfirm --needed -Sy pacoloco
 
 echo 'Server = http://localhost:9129/repo/archlinux/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
 

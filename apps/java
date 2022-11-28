@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+pacman -Qeq jdk-openjdk >/dev/null 2>&1 || sudo pacman --needed --noconfirm -Sy jdk-openjdk
+pacman -Qeq openjdk-doc >/dev/null 2>&1 || sudo pacman --needed --noconfirm -Sy openjdk-doc
+pacman -Qeq openjdk-src >/dev/null 2>&1 || sudo pacman --needed --noconfirm -Sy openjdk-src

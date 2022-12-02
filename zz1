@@ -48,6 +48,8 @@ useradd -m -g users -G audio,video,power,storage,wheel,scanner,network -p '$CFG_
 bootctl install
 mkinitcpio -P
 
+systemctl enable sshd.service
+
 EOF
 
 PASSWD=$1

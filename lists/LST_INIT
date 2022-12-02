@@ -7,5 +7,6 @@ linux-firmware
 linux-lts
 mkinitcpio
 networkmanager
+openssh
 polkit
 sudo

@@ -5,7 +5,6 @@ source ./env_cfg
 ./apps/yay
 ./apps/go
 ./apps/rust
-./apps/pacoloco
 ./apps/dotter
 [ "PLASMA" = "$CFG_DESKTOP_ENVIRONMENT" ] && ./apps/systemd-ssh-agent
 

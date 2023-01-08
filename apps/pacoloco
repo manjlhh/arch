@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-pacman -Qeq pacoloco >/dev/null 2>&1 && exit
-
-sudo pacman --noconfirm --needed -S pacoloco
-
-echo 'Server = http://localhost:9129/repo/archlinux/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist
-
-sudo systemctl enable --now pacoloco.service

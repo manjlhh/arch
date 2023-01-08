@@ -15,8 +15,8 @@ gsettings set org.gnome.desktop.media-handling autorun-never true
 gsettings set org.gnome.desktop.media-handling automount false
 
 gsettings set org.gnome.desktop.input-sources per-window true
-gsettings set org.gnome.desktop.input-sources sources [('xkb', 'us'), ('xkb', 'ru')]
-gsettings set org.gnome.desktop.input-sources xkb-options ['grp:caps_toggle']
+gsettings set org.gnome.desktop.input-sources sources [\(\'xkb\',\ \'us\'\),\ \(\'xkb\',\ \'ru\'\)]
+gsettings set org.gnome.desktop.input-sources xkb-options [\'grp:caps_toggle\']
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source []
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward []
 gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 25

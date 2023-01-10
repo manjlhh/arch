@@ -11,6 +11,7 @@ git-crypt
 gnupg
 htop
 jq
+kmon
 lazygit
 ldns
 linux-firmware

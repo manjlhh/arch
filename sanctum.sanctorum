@@ -5,6 +5,7 @@
 
 mkdir -p $(dirname $MAN_KDBX)
 
+! type openssl >/dev/null 2>&1 && APPS="$APPS openssl"
 ! type gpg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
 ! type jq >/dev/null 2>&1 && APPS="$APPS jq"
@@ -39,7 +40,7 @@ if [ ! -f "$MAN_KDBX" ]; then
     ### decrypt kdbx
     while : ; do
         test -z $passphrase && echo 'enter password for kdb archive:' && read -ers passphrase
-        gpg --passphrase "$passphrase" --batch --quiet --decrypt /tmp/kdbx | xz -d > $MAN_KDBX
+        openssl aes-256-cbc -d -a -pbkdf2 -pass "pass:$passphrase" -in /tmp/kdbx | xz -d > $MAN_KDBX
         [ $? -eq 0 ] && break
         rm -rf $MAN_KDBX
     done

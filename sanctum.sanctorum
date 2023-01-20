@@ -40,7 +40,7 @@ if [ ! -f "$MAN_KDBX" ]; then
     ### decrypt kdbx
     while : ; do
         test -z $passphrase && echo 'enter password for kdb archive:' && read -ers passphrase
-        openssl aes-256-cbc -d -a -pbkdf2 -pass "pass:$passphrase" -in /tmp/kdbx | xz -d > $MAN_KDBX
+        openssl aes-256-cbc -d -pbkdf2 -pass "pass:$passphrase" -in /tmp/kdbx | xz -d > $MAN_KDBX
         [ $? -eq 0 ] && break
         rm -rf $MAN_KDBX
     done

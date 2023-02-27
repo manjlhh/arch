@@ -33,4 +33,4 @@ gsettings set org.gnome.Terminal.Legacy.Settings menu-accelerator-enabled false
 # **************************************************************************************
 # **************************************************************************************
 
-sh -c "cd $HOME/repo/settings/dots; dotter deploy -f -l .dotter/gnome.toml"
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/gnome.toml"

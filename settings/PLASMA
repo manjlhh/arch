@@ -110,4 +110,4 @@
 # **************************************************************************************
 # **************************************************************************************
 
-sh -c "cd $HOME/repo/settings/dots; dotter deploy -f -l .dotter/plasma.toml"
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/plasma.toml"

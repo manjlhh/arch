@@ -1,5 +1,28 @@
 #!/usr/bin/env sh
 
+if [ $# -ne 2 ]; then
+    echo 'wrong arguments number'
+    echo 'usage: ./zz1 <password> <profile name from profiles directory>'
+    exit -1
+fi
+
+PASSWD=$1
+PROFILE=$2
+
+CUR_DIR=$(dirname "$0")
+PROFILES_DIR="$CUR_DIR/profiles"
+
+HASH=$(printf "$PASSWD" | sha512sum - | awk '{ print $1 }')
+HASH=${HASH:0:64}
+if [ $HASH != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99' ]; then
+    echo "wrong password: $PASSWD"
+    exit -1
+fi
+
+[ ! -f "$PROFILES_DIR/$PROFILE" ] && echo "no profile '$PROFILES_DIR/$PROFILE' exists" && exit -1
+
+
+
 type reflector >/dev/null 2>&1 && systemctl stop reflector.service
 timedatectl set-ntp true
 
@@ -13,7 +36,7 @@ source ./env_cfg
 Server = https://mirror.truenetwork.ru/archlinux/$repo/os/$arch
 '
 echo "$CFG_PACMAN_MIRRORLIST" > /etc/pacman.d/mirrorlist
-cp -f ./configurations/etc/pacman.conf /etc/pacman.conf
+cp -f ./configurations/common/etc/pacman.conf /etc/pacman.conf
 
 yes | pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -33,10 +56,17 @@ cat ./lists/LST_INIT | envsubst "$ENV_SUBST" | arch-chroot /mnt pacman --needed 
 
 # ----------------------------------
 
-find configurations/ -type f -print | xargs dirname | sort | uniq | sed 's/^configurations/\/mnt/' | xargs mkdir -p
-for conf in $(find configurations/ -type f); do
-    cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations}"
+find configurations/common/ -type f -print | xargs dirname | sort | uniq | sed 's|^configurations/common|/mnt|' | xargs mkdir -p
+for conf in $(find configurations/common/ -type f); do
+    cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations/common}"
 done
+
+if [ -d "./configurations/$PROFILE" ]; then
+    find "configurations/${PROFILE}/" -type f -print | xargs dirname | sort | uniq | sed "s|^configurations/$PROFILE|/mnt|" | xargs mkdir -p
+    for conf in $(find "configurations/${PROFILE}/" -type f); do
+        cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations/$PROFILE}"
+    done
+fi
 
 arch-chroot /mnt /bin/bash <<EOF
 
@@ -52,8 +82,6 @@ systemctl enable sshd.service
 
 EOF
 
-PASSWD=$1
-PROFILE=$2
 arch-chroot /mnt sudo -u ${CFG_USERNAME} sh <<EOF
 
 mkdir -p /home/${CFG_USERNAME}/.ssh

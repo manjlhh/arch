@@ -3,22 +3,22 @@
 [ -z $MAN_KDBX ] && echo 'MAN_KDBX not set' && exit -1
 [ -z $SANCTUM_SANCTORUM ] && echo 'SANCTUM_SANCTORUM not set' && exit -1
 
-mkdir -p $(dirname $MAN_KDBX)
+mkdir -p $(dirname "$MAN_KDBX")
 
 ! type openssl >/dev/null 2>&1 && APPS="$APPS openssl"
-! type gpg >/dev/null 2>&1 && APPS="$APPS gnupg"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
-! type jq >/dev/null 2>&1 && APPS="$APPS jq"
 [ -n "$APPS" ] && sudo pacman -Sy $APPS --noconfirm --needed
 
-# printf 'text' | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
-# cat $SANCTUM_SANCTORUM | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase 'passphrase' | base64 | tr -d '\n'
+# encode:
+# printf 'text' | openssl aes-256-cbc -a -A -salt -pbkdf2 -pass 'pass:<passphare>'
+# decode:
+# printf 'text' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass 'pass:<passphare>'
 
 if [ ! -f "$MAN_KDBX" ]; then
     ### main repo
     while : ; do
         test -z $passphrase && echo 'enter kdbx password:' && read -ers passphrase
-        link=$(echo 'jA0ECQMCbFuRczxVj1T00mIBMmmRtwiaycErI9Wqx4F1H+81ZMKzsWnwSXEMn0+TyY0TvYEXtRTB3ugZWFma6mF45Iu3AC5tVLuLZ75xNpqTrL+SZ7CPS7ZXTQRt3d/V7is3ttEmrgjO5ZnZWKBvFnSUNg==' | base64 --decode | gpg --decrypt --batch --quiet --passphrase "$passphrase")
+        link=$(printf 'U2FsdGVkX1/rt86eMORzz32XCc9Ns2rvb6yOIHCeazLK1UKoTEt+ozffIF6+UC/e6JKyJqpTeyTqqZUjI+Q2yg==' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass "pass:$passphrase")
         [ $? -eq 0 ] && echo $link && break
         unset passphrase
         unset link
@@ -27,7 +27,7 @@ if [ ! -f "$MAN_KDBX" ]; then
     ### backup repo
     if [ -z $link ]; then
         test -z $passphrase && echo 'enter kdbx password:' && read -ers passphrase
-        link=$(echo 'jA0ECQMCSfcT/Nh5o5r00nEB0pCiMS2BS65dIlnxNk70YPTKSB7TjatymYhHsMU3xNjan0iqwoDPt0rGC8B5kMWAfD7TOceXQcGDJ7T3imEx9nbkl0oPa2Gxaw7FiC/X1g2TrRUVWQ9OzISdYDvHIhRlZtVAyqmt0H/E+sx4lEKJ/A==' | base64 --decode | gpg --decrypt --batch --quiet --passphrase "$passphrase")
+        link=$(printf 'U2FsdGVkX18d5+Ns/XxSHgSbtziF+j3I71zK1E4FA+YYq6v3pYEhlUZPpX4S63P9pVp4qEYTGq6DOeLFqO7sfqF4VxuVi+2MKSyvfoU29ms=' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass "pass:$passphrase")
         [ $? -eq 0 ] && echo $link && break
         unset passphrase
         unset link
@@ -41,7 +41,7 @@ if [ ! -f "$MAN_KDBX" ]; then
     while : ; do
         test -z $passphrase && echo 'enter password for kdb archive:' && read -ers passphrase
         MAN_DIR="$(dirname $MAN_KDBX)"
-        unzip -fP "$passphrase" -d "$MAN_DIR"
+        unzip -u -P "$passphrase" -d "$MAN_DIR" /tmp/kdbx
         [ $? -eq 0 ] && break
         rm -rf $MAN_KDBX
     done
@@ -54,7 +54,10 @@ if [ ! -f "$SANCTUM_SANCTORUM" ]; then
         [ -z "$z" ] && break
         hash=$(printf "$z" | sha512sum | awk '{ print $1 }' || echo 0)
         hash=${hash:0:64}
-        [ $hash = '2b54c788564c6d81101e834ce39f0e9a2b6281f3f504894c89228550ecebec68' ] && printf 'jA0ECQMC7V7lSkZKbez30kQBRtLCmrzSS4odYXVssc2Xqr4PpFPU6uwBeJCQnPnObR6l0DN/90L1eEdLOz6HaJzS1ZkNnyAyxLPj0viYMA8X20ACug==' | base64 -d | gpg --decrypt --batch --quiet --passphrase "$z" > $SANCTUM_SANCTORUM && break
+        if [ "$hash" = '2b54c788564c6d81101e834ce39f0e9a2b6281f3f504894c89228550ecebec68' ]; then
+            printf 'U2FsdGVkX180Q8cix9aK/qAAXO94e2puaQ8DcWNmtvcqapUZ9hd5yyi8MQ0lwsftT1PWl93nzsi3E9Ug1loScw==\n' | openssl aes-256-cbc -a -d -pbkdf2 -pass "pass:$z" -out "$SANCTUM_SANCTORUM"
+            break
+        fi
     done
 fi
 

@@ -4,12 +4,12 @@
 
 if [ $# -ne 2 ]; then
     echo 'wrong arguments number'
-    echo 'usage: ./create_configuration <password> <profile name to save in profiles directory>'
+    echo 'usage: ./encode_configuration <password> <profile name to save in profiles directory>'
     exit -1
 fi
 
-CONF_DIR=$(dirname "$0")
-PROFILES_DIR="$CONF_DIR/profiles"
+CUR_DIR=$(dirname $(readlink -f "$0"))
+PROFILES_DIR="$CUR_DIR/profiles"
 
 HASH=$(printf "$1" | sha512sum - | awk '{ print $1 }')
 echo $HASH
@@ -19,4 +19,4 @@ if [ $HASH != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99'
     exit -1
 fi
 
-cat "$CONF_DIR/plain_configuration" | gpg --symmetric --cipher-algo AES256 --pinentry-mode=loopback --passphrase "$1" | base64 | tr -d '\n' > "$PROFILES_DIR/$2"
+openssl aes-256-cbc -a -salt -pbkdf2 -pass "pass:$1" -in "$CUR_DIR/plain_configuration" -out "$PROFILES_DIR/$2"

@@ -11,7 +11,7 @@ fi
 CUR_DIR=$(dirname $(readlink -f "$0"))
 PROFILES_DIR="$CUR_DIR/profiles"
 
-HASH=$(printf "$1" | sha512sum - | awk '{ print $1 }')
+HASH=$(printf "$1" | shasum -a 512 - | awk '{ print $1 }')
 echo $HASH
 HASH=${HASH:0:64}
 if [ $HASH != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99' ]; then

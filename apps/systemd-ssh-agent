@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
-pacman -Qeq systemd-ssh-agent >/dev/null 2>&1 || yay --sudoloop --needed --noconfirm -S systemd-ssh-agent
+pacman -Qqi systemd-ssh-agent >/dev/null 2>&1 || PKGS="$PKGS systemd-ssh-agent"
 
-systemctl --user enable ssh-agent.service
+[ ! -z "$PKGS" ] && sudo yay --sudoloop --needed --noconfirm -S $PKGS
+
+if [ $? -eq 0 ]; then
+	systemctl --user enable ssh-agent.service
+fi

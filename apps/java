@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
-pacman -Qeq jdk-openjdk >/dev/null 2>&1 || sudo pacman --needed --noconfirm -S jdk-openjdk
-pacman -Qeq openjdk-doc >/dev/null 2>&1 || sudo pacman --needed --noconfirm -S openjdk-doc
-pacman -Qeq openjdk-src >/dev/null 2>&1 || sudo pacman --needed --noconfirm -S openjdk-src
+pacman -Qqi jdk-openjdk >/dev/null 2>&1 || PKGS="$PKGS jdk-openjdk"
+pacman -Qqi openjdk-doc >/dev/null 2>&1 || PKGS="$PKGS openjdk-doc"
+pacman -Qqi openjdk-src >/dev/null 2>&1 || PKGS="$PKGS openjdk-src"
+
+[ ! -z "$PKGS" ] && sudo pacman --needed --noconfirm -S $PKGS

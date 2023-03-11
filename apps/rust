@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 
-pacman -Qeq rustup >/dev/null 2>&1 || sudo pacman --needed --noconfirm -S rustup
-pacman -Qeq rust-analyzer >/dev/null 2>&1 || sudo pacman --needed --noconfirm -S rust-analyzer
+pacman -Qqi rustup >/dev/null 2>&1 || PKGS="$PKGS rustup"
+pacman -Qqi rust-analyzer >/dev/null 2>&1 || PKGS="$PKGS rust-analyzer"
 
-rustup default stable
+[ ! -z "$PKGS" ] && sudo pacman --needed --noconfirm -S $PKGS
+
+if [ $? -eq 0 ]; then
+	rustup default stable
+fi

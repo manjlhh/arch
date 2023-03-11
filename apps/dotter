@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-pacman -Qeq dotter-rs-bin >/dev/null 2>&1 || yay --sudoloop --needed --noconfirm -S dotter-rs-bin
+pacman -Qqi dotter-rs-bin >/dev/null 2>&1 || PKGS="$PKGS dotter-rs-bin"
+
+[ ! -z "$PKGS" ] && yay --sudoloop --needed --noconfirm -S $PKGS

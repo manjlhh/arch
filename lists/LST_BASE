@@ -8,10 +8,10 @@ exfat-utils
 fd
 git
 git-crypt
+gitui
 gnupg
 htop
 jq
-lazygit
 ldns
 linux-firmware
 linux-lts

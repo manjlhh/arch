@@ -9,8 +9,13 @@ sleep 2
 . ./network_manager
 sleep 2
 
-cat ./lists/LST_BASE ./lists/LST_X ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
-sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service fstrim.timer bluetooth.service
+if [ -n "$CFG_DESKTOP_ENVIRONMENT" ]; then
+    cat ./lists/LST_BASE ./lists/LST_X ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
+    sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service fstrim.timer bluetooth.service
+else
+    cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
+    sudo systemctl enable fstrim.timer
+fi
 
 . ./apps/yay
 

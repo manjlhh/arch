@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+sudo pacman -S podman podman-compose cockpit-podman aardvark-dns
+
+sudo printf '[[registry]]
+location = "docker.io"
+' > /etc/containers/registries.conf.d/01-registries.conf
+
+sudo printf 'unqualified-search-registries = ["docker.io"]
+' > /etc/containers/registries.conf.d/00-unqualified-search-registries.conf

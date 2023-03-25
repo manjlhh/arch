@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-source ./env_cfg
+. ./env_cfg
 
 sudo timedatectl set-ntp true
 
@@ -9,21 +9,21 @@ sleep 2
 ./network_manager
 sleep 2
 
-if [ -n "$CFG_DESKTOP_ENVIRONMENT" ]; then
-    cat ./lists/LST_BASE ./lists/LST_X ./lists/"LST_$CFG_DESKTOP_ENVIRONMENT" | sudo pacman --needed --noconfirm -S -
+if [ -n "$CFG_DE" ]; then
+    cat ./lists/LST_BASE ./lists/LST_X ./lists/"LST_$CFG_DE" | sudo pacman --needed --noconfirm -S -
 else
     cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
 fi
 if [ -n "$CFG_DESKTOP_MANAGER" ]; then
-    sudo systemctl enable ${CFG_DESKTOP_MANAGER}.service
+    sudo systemctl enable "$CFG_DESKTOP_MANAGER.service"
 fi
 sudo systemctl enable fstrim.timer bluetooth.service
 
 . ./apps/yay
 
-[ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
-[ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
-[ -n "$CFG_GROUPS" ] && sudo usermod -a -G ${CFG_GROUPS// /,} $CFG_USERNAME
+[ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S "$CFG_PACKAGES"
+[ -n "$CFG_SYSTEMD" ] && sudo systemctl enable "$CFG_SYSTEMD"
+[ -n "$CFG_GROUPS" ] && sudo usermod -a -G ${CFG_GROUPS// /,} "$CFG_USERNAME"
 
 MAN_KDBX="$HOME/repo/man.kdbx"
 SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum"

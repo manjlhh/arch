@@ -3,13 +3,13 @@
 if [ $# -ne 2 ]; then
     echo 'wrong arguments number'
     echo 'usage: ./decode_configuration <password> <profile name from profiles directory>'
-    exit -1
+    exit 1
 fi
 
-CUR_DIR=$(dirname $(readlink -f "$0"))
+CUR_DIR=$(dirname "$(readlink -f "$0")")
 PROFILES_DIR="$CUR_DIR/profiles"
 
-[ ! -f "$PROFILES_DIR/$2" ] && echo "no profile '$PROFILES_DIR/$2' exists" && exit -1
+[ ! -f "$PROFILES_DIR/$2" ] && echo "no profile '$PROFILES_DIR/$2' exists" && exit 1
 
 rm -f "$CUR_DIR/plain_configuration"
 openssl aes-256-cbc -d -a -pbkdf2 -pass "pass:$1" -in "$PROFILES_DIR/$2" -out "$CUR_DIR/plain_configuration"

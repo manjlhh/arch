@@ -3,7 +3,7 @@
 if [ $# -ne 2 ]; then
     echo 'wrong arguments number'
     echo 'usage: ./zz1 <password> <profile name from profiles directory>'
-    exit -1
+    exit 1
 fi
 
 PASSWD=$1
@@ -12,14 +12,14 @@ PROFILE=$2
 CUR_DIR=$(dirname "$0")
 PROFILES_DIR="$CUR_DIR/profiles"
 
-HASH=$(printf "$PASSWD" | sha512sum - | awk '{ print $1 }')
+HASH=$(printf '%s' "$PASSWD" | sha512sum - | awk '{ print $1 }')
 HASH=${HASH:0:64}
-if [ $HASH != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99' ]; then
+if [ "$HASH" != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99' ]; then
     echo "wrong password: $PASSWD"
-    exit -1
+    exit 1
 fi
 
-[ ! -f "$PROFILES_DIR/$PROFILE" ] && echo "no profile '$PROFILES_DIR/$PROFILE' exists" && exit -1
+[ ! -f "$PROFILES_DIR/$PROFILE" ] && echo "no profile '$PROFILES_DIR/$PROFILE' exists" && exit 1
 
 
 
@@ -28,7 +28,7 @@ timedatectl set-ntp true
 
 pacman --noconfirm --needed -Sy
 
-source ./env_cfg
+. ./env_cfg
 
 . ./partition
 
@@ -42,7 +42,7 @@ yes | pacstrap /mnt base
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/relatime/noatime/' /mnt/etc/fstab
 
-CFG_ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME $CFG_DEVICE | tail -1)
+CFG_ROOT_DEVICE=$(lsblk -p -n -o NAME -x NAME "$CFG_DEVICE" | tail -1)
 set -a
 CFG_ROOT_DEVICE_UUID=$(blkid -s UUID -o value "$CFG_ROOT_DEVICE")
 set +a
@@ -64,7 +64,7 @@ done
 if [ -d "./configurations/$PROFILE" ]; then
     find "configurations/${PROFILE}/" -type f -print | xargs dirname | sort | uniq | sed "s|^configurations/$PROFILE|/mnt|" | xargs mkdir -p
     for conf in $(find "configurations/${PROFILE}/" -type f); do
-        cat $conf | envsubst "$ENV_SUBST" > "/mnt${conf#configurations/$PROFILE}"
+        cat "$conf" | envsubst "$ENV_SUBST" > "/mnt${conf#configurations/$PROFILE}"
     done
 fi
 
@@ -82,7 +82,7 @@ systemctl enable sshd.service
 
 EOF
 
-arch-chroot /mnt sudo -u ${CFG_USERNAME} sh <<EOF
+arch-chroot /mnt sudo -u "$CFG_USERNAME" sh <<EOF
 
 mkdir -p /home/${CFG_USERNAME}/.ssh
 printf 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPBlmW9r5Y8Zj8cTxECLO9HEY+USByhVDxdPxq++oy2 id_ed25519

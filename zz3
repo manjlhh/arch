@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-source ./env_cfg
+. ./env_cfg
 
 ./apps/yay
 ./apps/go
 ./apps/rust
 ./apps/dotter
-[ "PLASMA" = "$CFG_DESKTOP_ENVIRONMENT" ] && ./apps/systemd-ssh-agent
+[ "$CFG_DE" -eq 1 ] && ./apps/systemd-ssh-agent
 
-. ./settings/"$CFG_DESKTOP_ENVIRONMENT"
+. ./settings/"PLASMA"

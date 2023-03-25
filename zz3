@@ -8,4 +8,4 @@
 ./apps/dotter
 [ "$CFG_DE" -eq 1 ] && ./apps/systemd-ssh-agent
 
-. ./settings/"PLASMA"
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/plasma.toml"

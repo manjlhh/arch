@@ -6,11 +6,11 @@ sudo timedatectl set-ntp true
 
 sudo systemctl enable --now dnsmasq.service
 sleep 2
-./network_manager
+sh ./network_manager
 sleep 2
 
-if [ -n "$CFG_DE" ]; then
-    cat ./lists/LST_BASE ./lists/LST_X ./lists/"LST_$CFG_DE" | sudo pacman --needed --noconfirm -S -
+if [ "$CFG_DE" -eq 1 ]; then
+    cat ./lists/LST_BASE ./lists/LST_X ./lists/LST_DE | sudo pacman --needed --noconfirm -S -
 else
     cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
 fi
@@ -19,12 +19,10 @@ if [ -n "$CFG_DESKTOP_MANAGER" ]; then
 fi
 sudo systemctl enable fstrim.timer bluetooth.service
 
-. ./apps/yay
+sh ./apps/yay
 
-[ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S "$CFG_PACKAGES"
-[ -n "$CFG_SYSTEMD" ] && sudo systemctl enable "$CFG_SYSTEMD"
+[ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
+[ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
 [ -n "$CFG_GROUPS" ] && sudo usermod -a -G ${CFG_GROUPS// /,} "$CFG_USERNAME"
 
-MAN_KDBX="$HOME/repo/man.kdbx"
-SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum"
-. ./sanctum.sanctorum
+MAN_KDBX="$HOME/repo/man.kdbx" SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum" sh ./sanctum.sanctorum

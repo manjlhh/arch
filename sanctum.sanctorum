@@ -1,74 +1,45 @@
 #!/usr/bin/env bash
 
-[ -z "$MAN_KDBX" ] && echo 'MAN_KDBX not set' && exit 1
-[ -z "$SANCTUM_SANCTORUM" ] && echo 'SANCTUM_SANCTORUM not set' && exit 1
-
-mkdir -p "$(dirname "$MAN_KDBX")"
-
 ! type openssl >/dev/null 2>&1 && APPS="$APPS openssl"
 ! type curl >/dev/null 2>&1 && APPS="$APPS curl"
 ! type unzip >/dev/null 2>&1 && APPS="$APPS unzip"
 [ -n "$APPS" ] && sudo pacman -Sy "$APPS" --noconfirm --needed
+
+mkdir -p $HOME/repo
 
 # encode:
 # printf 'text' | openssl aes-256-cbc -a -A -salt -pbkdf2 -pass 'pass:<passphare>'
 # decode:
 # printf 'text' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass 'pass:<passphare>'
 
-if [ ! -f "$MAN_KDBX" ]; then
-    ### main repo
+SSD="$HOME/repo/sanctum.sanctorum"
+SSP="$SSD/sanctum.sanctorum.kdbx"
+SSK="$SSD/.sanctum.sanctorum"
+
+## kdbx
+if [ ! -d "$SSD" ]; then
+    git clone https://github.com/devrtc0/sanctum.sanctorum.git "$SSD"
+    sh -c "cd $SSD; git remote set-url origin git@github.com:devrtc0/sanctum.sanctorum.git"
+
     while : ; do
-        [ -z "$passphrase" ] && echo 'enter kdbx password:' && read -ers passphrase
-        link=$(printf 'U2FsdGVkX1/rt86eMORzz32XCc9Ns2rvb6yOIHCeazLK1UKoTEt+ozffIF6+UC/e6JKyJqpTeyTqqZUjI+Q2yg==' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass "pass:$passphrase")
-        [ $? -eq 0 ] && echo "$link" && break
-        unset passphrase
-        unset link
-    done
-
-    ### backup repo
-    if [ -z "$link" ]; then
-        [ -z "$passphrase" ] && echo 'enter kdbx password:' && read -ers passphrase
-        link=$(printf 'U2FsdGVkX18d5+Ns/XxSHgSbtziF+j3I71zK1E4FA+YYq6v3pYEhlUZPpX4S63P9pVp4qEYTGq6DOeLFqO7sfqF4VxuVi+2MKSyvfoU29ms=' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass "pass:$passphrase")
-        [ $? -eq 0 ] && echo "$link"
-        unset passphrase
-        unset link
-    fi
-
-    ### download
-    curl -sSL --output /tmp/kdbx "$link"
-    echo "kdbx has been downloaded"
-
-    ### decrypt kdbx
-    while : ; do
-        [ -z "$passphrase" ]&& echo 'enter password for kdb archive:' && read -ers passphrase
-        MAN_DIR="$(dirname "$MAN_KDBX")"
-        unzip -u -P "$passphrase" -d "$MAN_DIR" /tmp/kdbx
+        [ -z "$passphrase" ] && echo 'enter password for kdb archive:' && read -ers passphrase
+        sh -c "cd $SSD; ./decode.sh $passphrase"
         [ $? -eq 0 ] && break
-        rm -rf "$MAN_KDBX"
+        unset passphrase
     done
 fi
 
-if [ ! -f "$SANCTUM_SANCTORUM" ]; then
-    # content extraction
+if [ ! -f "$SSK" ]; then
     while : ; do
-        echo "enter password for $SANCTUM_SANCTORUM:" && read -ers z
+        echo "enter password for $SSK:" && read -ers z
         [ -z "$z" ] && break
-        hash=$(printf '%s' "$z" | sha512sum | awk '{ print $1 }' || echo 0)
-        hash=${hash:0:64}
-        if [ "$hash" = '2b54c788564c6d81101e834ce39f0e9a2b6281f3f504894c89228550ecebec68' ]; then
-            printf 'U2FsdGVkX180Q8cix9aK/qAAXO94e2puaQ8DcWNmtvcqapUZ9hd5yyi8MQ0lwsftT1PWl93nzsi3E9Ug1loScw==\n' | openssl aes-256-cbc -a -d -pbkdf2 -pass "pass:$z" -out "$SANCTUM_SANCTORUM"
-            break
-        fi
+        sh -c "cd $SSD; ./extract_sanctum_sacntorum.sh $z"
+        [ $? -eq 0 ] && break
+        unset z
     done
-fi
 
-while : ; do
-    hash=$([ -f "$SANCTUM_SANCTORUM" ] && sha512sum "$SANCTUM_SANCTORUM" | awk '{ print $1 }' || echo 0)
-    hash=${hash:0:64}
-    [ "$hash" = 'da78e04ead69bdff7f9a9d5eb12e8e9cc7439ac347c697b6093eba4f1b727c7a' ] && chmod 0400 "$SANCTUM_SANCTORUM" && break
-    echo "enter $SANCTUM_SANCTORUM content:"
-    sh -c "IFS= ;read -N 34 -s -a z; echo \$z > $SANCTUM_SANCTORUM"
-done
+    sh -c "cd $SSD; ./fill_sanctum_sacntorum.sh"
+fi
 
 ### uncomment the next block if credentials are stored in dot files
 # dots.secret
@@ -88,20 +59,12 @@ done
 
 # REPOSOTORIES
 get_token () {
-    [ -z "$passphrase" ] && echo 'enter kdbx password:' && read -ers passphrase
     if [ -n "$token" ]; then
         return
     fi
-    token=$(yes "$passphrase" | keepassxc-cli show -q -a Password -s -k "$SANCTUM_SANCTORUM" "$MAN_KDBX" Repositories/GitHub/token)
+    [ -z "$passphrase" ] && echo 'enter kdbx password:' && read -ers passphrase
+    token=$(yes "$passphrase" | keepassxc-cli show -q -a Password -s -k "$SSK" "$SSP" Repositories/GitHub/token)
 }
-## kdbx
-if [ ! -d "$HOME/repo/kdbx" ]; then
-    git clone https://github.com/devrtc0/kdbx.git "$HOME/repo/kdbx"
-    sh -c 'cd $HOME/repo/kdbx; git remote set-url origin git@github.com:devrtc0/kdbx.git'
-    sh -c 'cd $HOME/repo/kdbx; git remote add gitlab git@gitlab.com:devrtc0/kdbx.git'
-    sh -c 'cd $HOME/repo/kdbx; git remote add flic git@gitflic.ru:devrtc0/kdbx.git'
-    sh -c 'cd $HOME/repo/kdbx; git remote add codeberg git@codeberg.org:devrtc0/kdbx.git'
-fi
 # settings
 if [ ! -d "$HOME/repo/settings" ]; then
     get_token
@@ -116,7 +79,6 @@ if [ ! -d $HOME/repo/scripts ]; then
     git clone https://devrtc0:${token}@github.com/devrtc0/scripts.git $HOME/repo/scripts
     sh -c 'cd $HOME/repo/scripts; git remote set-url origin git@github.com:devrtc0/scripts.git'
 fi
-
 # dots
 if [ ! -d "$HOME/repo/dots" ]; then
     get_token
@@ -124,5 +86,6 @@ if [ ! -d "$HOME/repo/dots" ]; then
     git clone "https://devrtc0:${token}@github.com/devrtc0/dots.git" "$HOME/repo/dots"
     sh -c 'cd $HOME/repo/dots; git remote set-url origin git@github.com:devrtc0/dots.git'
 fi
+
 # this repo - arch
 sh -c "cd $HOME/repo/arch; git remote set-url origin git@github.com:devrtc0/arch.git"

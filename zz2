@@ -25,4 +25,4 @@ sh ./apps/yay
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD
 [ -n "$CFG_GROUPS" ] && sudo usermod -a -G ${CFG_GROUPS// /,} "$CFG_USERNAME"
 
-MAN_KDBX="$HOME/repo/man.kdbx" SANCTUM_SANCTORUM="$HOME/.sanctum.sanctorum" sh ./sanctum.sanctorum
+sh ./sanctum.sanctorum

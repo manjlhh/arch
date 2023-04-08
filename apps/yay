@@ -2,6 +2,8 @@
 
 pacman -Qqi yay-bin >/dev/null 2>&1 && exit
 
+sudo pacman --needed --noconfirm -S base-devel
+
 rm -rf /tmp/yay
 git clone --depth=1 https://aur.archlinux.org/yay-bin.git /tmp/yay
 sh -c 'cd /tmp/yay && makepkg -ris --noconfirm'

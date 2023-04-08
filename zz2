@@ -4,8 +4,6 @@
 
 sudo timedatectl set-ntp true
 
-sudo systemctl enable --now dnsmasq.service
-sleep 2
 sh ./network_manager
 sleep 2
 

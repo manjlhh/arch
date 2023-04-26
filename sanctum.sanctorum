@@ -51,7 +51,7 @@ fi
 #         [ $? -eq 0 ] && break
 #     done
 
-#     hash=$([ -f $HOME/.dots.secret ] && sha512sum $HOME/.dots.secret | awk '{ print $1 }' || echo 0)
+#     hash=$([ -f $HOME/.dots.secret ] && shasum -a 512 $HOME/.dots.secret | awk '{ print $1 }' || echo 0)
 #     hash=${hash:0:64}
 #     [ $hash != 'd5f37e719c1af84da39fbef77908b8fb1b8e14737f7c02aa2206cc3adeb4e8be' ] && echo 'wrong dots.secret file content' && exit 1
 #     chmod 0400 $HOME/.dots.secret

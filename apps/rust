@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
 pacman -Qqi rustup >/dev/null 2>&1 || PKGS="$PKGS rustup"
-pacman -Qqi rust-analyzer >/dev/null 2>&1 || PKGS="$PKGS rust-analyzer"
 
 [ ! -z "$PKGS" ] && sudo pacman --needed --noconfirm -S $PKGS
 

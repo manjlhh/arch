@@ -12,7 +12,7 @@ PROFILE=$2
 CUR_DIR=$(dirname "$0")
 PROFILES_DIR="$CUR_DIR/profiles"
 
-HASH=$(printf '%s' "$PASSWD" | sha512sum - | awk '{ print $1 }')
+HASH=$(printf '%s' "$PASSWD" | shasum -a 512 - | awk '{ print $1 }')
 HASH=${HASH:0:64}
 if [ "$HASH" != 'c0724f8a39315e4b8ea14b5a0ae51ac532ac7255cad4e72b839c3bb055c20f99' ]; then
     echo "wrong password: $PASSWD"

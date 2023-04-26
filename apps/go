@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
 pacman -Qqi go >/dev/null 2>&1 || PKGS="$PKGS go"
-pacman -Qqi gopls >/dev/null 2>&1 || PKGS="$PKGS gopls"
 
 [ ! -z "$PKGS" ] && sudo pacman --needed --noconfirm -S $PKGS

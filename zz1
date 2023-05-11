@@ -70,6 +70,8 @@ fi
 
 arch-chroot /mnt /bin/bash <<EOF
 
+date -u | tee -a /usr/lib/arch.meta
+
 locale-gen
 ln -s /usr/share/zoneinfo/Europe/Samara /etc/localtime
 hwclock --systohc --utc

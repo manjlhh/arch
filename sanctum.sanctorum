@@ -33,12 +33,12 @@ if [ ! -f "$SSK" ]; then
     while : ; do
         echo "enter password for $SSK:" && read -ers z
         [ -z "$z" ] && break
-        sh -c "cd $SSD; ./extract_sanctum_sacntorum.sh $z"
+        sh -c "cd $SSD; ./extract_sanctum_sanctorum.sh $z"
         [ $? -eq 0 ] && break
         unset z
     done
 
-    sh -c "cd $SSD; ./fill_sanctum_sacntorum.sh"
+    sh -c "cd $SSD; ./fill_sanctum_sanctorum.sh"
 fi
 
 ### uncomment the next block if credentials are stored in dot files

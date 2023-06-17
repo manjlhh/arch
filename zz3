@@ -6,6 +6,15 @@
 ./apps/go
 ./apps/rust
 ./apps/dotter
-[ "$CFG_DE" -eq 1 ] && ./apps/systemd-ssh-agent
+[ "$CFG_DE" = "PLASMA" ] && ./apps/systemd-ssh-agent
 
-sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/plasma.toml"
+case "$CFG_DE" in
+"PLASMA")
+    dotter="plasma"
+    ;;
+*)
+    dotter="default"
+    ;;
+esac
+
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/$dotter.toml"

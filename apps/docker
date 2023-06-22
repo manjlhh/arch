@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+for name in "docker" "docker-compose"
+do
+	pacman -Qi "$name" >/dev/null 2>&1 || APPS="$APPS $name"
+done
+
+if [ -n "$APPS" ]; then
+	sudo pacman --needed --noconfirm -S $APPS
+fi
+
+sudo gpasswd -a azat docker
+
+sudo systemctl enable --now docker.socket

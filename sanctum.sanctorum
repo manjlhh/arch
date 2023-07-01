@@ -20,6 +20,9 @@ SSK="$SSD/.sanctum.sanctorum"
 if [ ! -d "$SSD" ]; then
     git clone https://github.com/devrtc0/sanctum.sanctorum.git "$SSD"
     sh -c "cd $SSD; git remote set-url origin git@github.com:devrtc0/sanctum.sanctorum.git"
+    sh -c "cd $SSD; git remote add gitlab git@gitlab.com:devrtc0/sanctum.sanctorum.git"
+    sh -c "cd $SSD; git remote add codeberg git@codeberg.org:devrtc0/sanctum.sanctorum.git"
+    sh -c "cd $SSD; git remote add flic git@gitflic.ru:devrtc0/sanctum-sanctorum.git"
 
     while : ; do
         [ -z "$passphrase" ] && echo 'enter password for kdb archive:' && read -ers passphrase

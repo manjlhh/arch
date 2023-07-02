@@ -12,6 +12,10 @@ case "$CFG_DE" in
 "PLASMA")
     dotter="plasma"
     ;;
+"GNOME")
+    dotter="gnome"
+    ;;
+
 *)
     dotter="default"
     ;;

@@ -18,9 +18,15 @@ case "$CFG_CPU_VENDOR" in
     ;;
 esac
 
-if [ -n "$CFG_DE" ]; then
-    CFG_DESKTOP_MANAGER='sddm'
-fi
+case "$CFG_DE" in
+"PLASMA")
+    CFG_DESKTOP_MANAGER="sddm"
+    ;;
+"GNOME")
+    CFG_DESKTOP_MANAGER="gdm"
+    ;;
+*)
+esac
 
 set +a
 
@@ -29,4 +35,3 @@ set +a
 [ -z "$CFG_HOSTNAME" ] && echo "CFG_HOSTNAME" && exit 1
 [ -z "$CFG_ROOT_PASSWORD" ] && echo "CFG_ROOT_PASSWORD" && exit 1
 [ -z "$CFG_USER_PASSWORD" ] && echo "CFG_USER_PASSWORD" && exit 1
-[ -z "$CFG_DE" ] && echo "CFG_DE" && exit 1

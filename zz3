@@ -10,15 +10,17 @@
 
 case "$CFG_DE" in
 "PLASMA")
-    dotter="plasma"
+    de="plasma"
     ;;
 "GNOME")
-    dotter="gnome"
+    de="gnome"
     ;;
 
 *)
-    dotter="default"
+    de="default"
     ;;
 esac
 
-sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/$dotter.toml"
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/$de.toml"
+
+sh -c "cd $HOME/repo/arch/settings && ./$de.sh"

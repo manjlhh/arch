@@ -1,3 +1,4 @@
+celluloid
 eog
 evince
 file-roller
@@ -8,11 +9,11 @@ gnome-calculator
 gnome-control-center
 gnome-keyring
 gnome-shell
+gnome-shell-extension-appindicator
 gnome-terminal
 gnome-tweaks
 nautilus
 qgnomeplatform-qt5
 qgnomeplatform-qt6
-celluloid
 transmission-gtk
 wl-clipboard

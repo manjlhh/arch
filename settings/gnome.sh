@@ -31,6 +31,4 @@ gsettings set org.gnome.desktop.privacy send-software-usage-stats false
 # Terminal F10
 gsettings set org.gnome.Terminal.Legacy.Settings menu-accelerator-enabled false
 
-gsettings set org.gnome.shell.extensions.dash-to-dock disable-overview-on-startup true
-
 gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com

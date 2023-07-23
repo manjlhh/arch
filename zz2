@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 
-. ./env_cfg
-
 sudo timedatectl set-ntp true
 
 sh ./network_manager
 sleep 2
+
+. ./env_cfg
 
 if [ -n "$CFG_DE" ]; then
     cat ./lists/LST_BASE ./lists/LST_X ./lists/LST_$CFG_DE | sudo pacman --needed --noconfirm -S -

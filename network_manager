@@ -6,6 +6,8 @@ sleep 2
 ! systemctl is-enabled NetworkManager.service > /dev/null && sudo systemctl enable --now NetworkManager.service
 systemctl is-enabled NetworkManager-wait-online.service > /dev/null && sudo systemctl disable --now NetworkManager-wait-online.service
 
+. ./env_cfg
+
 [ -z "$CFG_NETWORKMANAGER_SSID" ] && exit
 
 while : ; do

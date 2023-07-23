@@ -10,6 +10,7 @@ git
 git-crypt
 gitui
 gnupg
+helix
 htop
 jq
 ldns
@@ -20,12 +21,12 @@ man
 mc
 micro
 ncdu
-neovim
 oath-toolkit
 openssh
 p7zip
 pbzip2
 pigz
+pulsemixer
 unrar
 unzip
 wget

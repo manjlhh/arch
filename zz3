@@ -6,7 +6,6 @@
 ./apps/go
 ./apps/rust
 ./apps/dotter
-[ "$CFG_DE" = "PLASMA" ] && ./apps/systemd-ssh-agent
 
 case "$CFG_DE" in
 "PLASMA")

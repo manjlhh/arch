@@ -3,9 +3,8 @@
 . ./env_cfg
 
 ./apps/yay
-./apps/go
-./apps/rust
 ./apps/dotter
+
 
 case "$CFG_DE" in
 "PLASMA")

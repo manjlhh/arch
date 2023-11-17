@@ -104,3 +104,5 @@
 
 # # dolphin
 # kwriteconfig5 --file $HOME/.config/kiorc --group Confirmations --key ConfirmDelete "false"
+
+systemctl --user enable --now ssh-agent.service

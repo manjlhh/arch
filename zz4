@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+. ./env_cfg
+
+./apps/yay
+./apps/dotter
+
+
+case "$CFG_DE" in
+"PLASMA")
+    de="plasma"
+    ;;
+"GNOME")
+    de="gnome"
+    ;;
+
+*)
+    de="default"
+    ;;
+esac
+
+sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/$de.toml"
+
+sh -c "cd $HOME/repo/arch/settings && ./$de.sh"

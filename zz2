@@ -3,21 +3,15 @@
 sudo timedatectl set-ntp true
 
 sh ./network_manager
-sleep 2
+sleep 3
 
 . ./env_cfg
 
-if [ -n "$CFG_DE" ]; then
-    cat ./lists/LST_BASE ./lists/LST_X ./lists/LST_$CFG_DE | sudo pacman --needed --noconfirm -S -
-else
-    cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
-fi
-if [ -n "$CFG_DESKTOP_MANAGER" ]; then
-    sudo systemctl enable "$CFG_DESKTOP_MANAGER.service"
-fi
-sudo systemctl enable fstrim.timer bluetooth.service
+cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
 
 sh ./apps/yay
+
+sudo systemctl enable fstrim.timer bluetooth.service
 
 [ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD

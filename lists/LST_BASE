@@ -16,6 +16,7 @@ ldns
 linux-firmware
 linux-lts
 linux-lts-headers
+lsof
 man
 mc
 micro
@@ -26,7 +27,6 @@ p7zip
 pbzip2
 pigz
 pulsemixer
-qbittorrent
 unrar
 unzip
 usbutils

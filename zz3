@@ -2,23 +2,10 @@
 
 . ./env_cfg
 
-./apps/yay
-./apps/dotter
+if [ -n "$CFG_DE" ]; then
+    cat ./lists/LST_X ./lists/LST_$CFG_DE | sudo pacman --needed --noconfirm -S -
+fi
 
-
-case "$CFG_DE" in
-"PLASMA")
-    de="plasma"
-    ;;
-"GNOME")
-    de="gnome"
-    ;;
-
-*)
-    de="default"
-    ;;
-esac
-
-sh -c "cd $HOME/repo/dots; dotter deploy -f -l .dotter/$de.toml"
-
-sh -c "cd $HOME/repo/arch/settings && ./$de.sh"
+if [ -n "$CFG_DESKTOP_MANAGER" ]; then
+    sudo systemctl enable "$CFG_DESKTOP_MANAGER.service"
+fi

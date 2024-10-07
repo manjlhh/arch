@@ -3,6 +3,9 @@
 sudo timedatectl set-ntp true
 
 sh ./network_manager
+
+sudo systemctl enable --now dnsmasq doh-client
+
 sleep 3
 
 . ./env_cfg

@@ -2,7 +2,6 @@ base-devel
 bluez-utils
 curl
 devtools
-dnsmasq
 dns-over-https
 eza
 exfat-utils

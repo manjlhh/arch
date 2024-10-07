@@ -13,7 +13,5 @@ gnome-shell-extension-appindicator
 gnome-terminal
 gnome-tweaks
 nautilus
-qgnomeplatform-qt5
-qgnomeplatform-qt6
 wl-clipboard
 xdg-desktop-portal-gnome

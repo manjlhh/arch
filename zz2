@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 sudo timedatectl set-ntp true
-sudo systemctl enable --now doh-client
+sudo systemctl enable --now doh-client dnsmasq
 
 sleep 2
 sh ./network_manager

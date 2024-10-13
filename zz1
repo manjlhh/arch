@@ -93,6 +93,8 @@ mkdir -p /home/${CFG_USERNAME}/.ssh
 printf 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPBlmW9r5Y8Zj8cTxECLO9HEY+USByhVDxdPxq++oy2 id_ed25519
 ' > /home/${CFG_USERNAME}/.ssh/authorized_keys
 
+mkdir -p /home/${CFG_USERNAME}/.config/dnsmasq.d
+
 mkdir -p /home/${CFG_USERNAME}/repo
 git clone https://github.com/devrtc0/arch.git /home/${CFG_USERNAME}/repo/arch
 cd /home/${CFG_USERNAME}/repo/arch

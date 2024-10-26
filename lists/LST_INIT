@@ -2,10 +2,12 @@ $CFG_UCODE
 aria2
 base
 dnsmasq
+dns-over-https
 fish
 git
 linux-firmware
 linux-lts
+micro
 mkinitcpio
 networkmanager
 openssh

@@ -10,11 +10,11 @@ exfat-utils
 fd
 git
 git-crypt
-gitui
 gnupg
 htop
 jq
 keepassxc
+lazygit
 ldns
 linux-firmware
 linux-lts
@@ -29,6 +29,7 @@ openssh
 p7zip
 pbzip2
 pigz
+pipewire-jack
 pulsemixer
 unrar
 unzip

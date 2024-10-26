@@ -13,7 +13,7 @@ cat ./lists/LST_BASE | sudo pacman --needed --noconfirm -S -
 
 sh ./apps/yay
 
-sudo systemctl enable fstrim.timer
+sudo systemctl enable fstrim.timer bluetooth.service
 
 [ -n "$CFG_PACKAGES" ] && yay --sudoloop --needed --noconfirm -S $CFG_PACKAGES
 [ -n "$CFG_SYSTEMD" ] && sudo systemctl enable $CFG_SYSTEMD

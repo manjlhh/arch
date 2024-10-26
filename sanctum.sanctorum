@@ -13,7 +13,7 @@ mkdir -p $HOME/repo
 # printf 'text' | openssl aes-256-cbc -a -A -d -pbkdf2 -pass 'pass:<passphare>'
 
 SSD="$HOME/repo/sanctum.sanctorum"
-SSP="$SSD/sanctum.sanctorum.kdbx"
+SSP="$SSD/dec/sanctum.sanctorum.kdbx"
 SSK="$SSD/.sanctum.sanctorum"
 
 ## kdbx

@@ -1,4 +1,5 @@
 base-devel
+bluez
 bluez-utils
 curl
 devtools
@@ -13,6 +14,7 @@ gitui
 gnupg
 htop
 jq
+keepassxc
 ldns
 linux-firmware
 linux-lts

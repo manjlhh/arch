@@ -1,10 +1,11 @@
 $CFG_UCODE
 aria2
 base
-dnsmasq
 dns-over-https
+dnsmasq
 fish
 git
+iptables
 linux-firmware
 linux-lts
 micro

@@ -3,10 +3,10 @@ bluez
 bluez-utils
 curl
 devtools
-dnsmasq
 dns-over-https
-eza
+dnsmasq
 exfat-utils
+eza
 fd
 git
 git-crypt
@@ -20,7 +20,7 @@ linux-firmware
 linux-lts
 linux-lts-headers
 lsof
-man
+man-db
 mc
 micro
 ncdu

@@ -30,7 +30,7 @@ p7zip
 pbzip2
 pigz
 pipewire-jack
-pulsemixer
+pipewire-pulse
 unrar
 unzip
 usbutils

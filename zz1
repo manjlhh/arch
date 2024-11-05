@@ -38,7 +38,7 @@ Server = https://mirror.truenetwork.ru/archlinux/$repo/os/$arch
 echo "$CFG_PACMAN_MIRRORLIST" > /etc/pacman.d/mirrorlist
 cp -f ./configurations/common/etc/pacman.conf /etc/pacman.conf
 
-yes | pacstrap /mnt base
+yes | pacstrap /mnt base iptables-nft
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/relatime/noatime/' /mnt/etc/fstab
 

@@ -10,6 +10,7 @@ eza
 fd
 git
 git-crypt
+gnu-netcat
 gnupg
 htop
 jq

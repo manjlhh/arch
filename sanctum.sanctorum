@@ -18,7 +18,7 @@ SSK="$SSD/.sanctum.sanctorum"
 
 ## kdbx
 if [ ! -d "$SSD" ]; then
-    git clone https://github.com/devrtc0/sanctum.sanctorum.git "$SSD"
+    git clone https://github.com/manjlhh/sanctum.sanctorum.git "$SSD"
     sh "$SSD/prepare.sh"
 
     while : ; do
@@ -69,23 +69,23 @@ get_token () {
 if [ ! -d "$HOME/repo/settings" ]; then
     get_token
 
-    git clone "https://devrtc0:${token}@github.com/devrtc0/settings.git" "$HOME/repo/settings"
-    sh -c 'cd $HOME/repo/settings; git remote set-url origin git@github.com:devrtc0/settings.git'
+    git clone "https://manjlhh:${token}@github.com/manjlhh/settings.git" "$HOME/repo/settings"
+    sh -c 'cd $HOME/repo/settings; git remote set-url origin git@github.com:manjlhh/settings.git'
 fi
 # scripts
 if [ ! -d $HOME/repo/scripts ]; then
     get_token
 
-    git clone https://devrtc0:${token}@github.com/devrtc0/scripts.git $HOME/repo/scripts
-    sh -c 'cd $HOME/repo/scripts; git remote set-url origin git@github.com:devrtc0/scripts.git'
+    git clone https://manjlhh:${token}@github.com/manjlhh/scripts.git $HOME/repo/scripts
+    sh -c 'cd $HOME/repo/scripts; git remote set-url origin git@github.com:manjlhh/scripts.git'
 fi
 # dots
 if [ ! -d "$HOME/repo/dots" ]; then
     get_token
 
-    git clone "https://devrtc0:${token}@github.com/devrtc0/dots.git" "$HOME/repo/dots"
-    sh -c 'cd $HOME/repo/dots; git remote set-url origin git@github.com:devrtc0/dots.git'
+    git clone "https://manjlhh:${token}@github.com/manjlhh/dots.git" "$HOME/repo/dots"
+    sh -c 'cd $HOME/repo/dots; git remote set-url origin git@github.com:manjlhh/dots.git'
 fi
 
 # this repo - arch
-sh -c "cd $HOME/repo/arch; git remote set-url origin git@github.com:devrtc0/arch.git"
+sh -c "cd $HOME/repo/arch; git remote set-url origin git@github.com:manjlhh/arch.git"

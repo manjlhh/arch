@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+pacman -Qqi jdk21-openjdk >/dev/null 2>&1 || PKGS="$PKGS jdk21-openjdk"
+pacman -Qqi openjdk21-doc >/dev/null 2>&1 || PKGS="$PKGS openjdk21-doc"
+pacman -Qqi openjdk21-src >/dev/null 2>&1 || PKGS="$PKGS openjdk21-src"
+
+[ ! -z "$PKGS" ] && sudo pacman --needed --noconfirm -S $PKGS
+
+echo "done"
